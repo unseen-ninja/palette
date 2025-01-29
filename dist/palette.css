@@ -1,0 +1,20 @@
+:root {
+
+  --grape: lch( 40.014% 108.495 309.59 ); --grape-tint: lch( 44.014% 106.495 310.59 ); --grape-shade: lch( 36.014% 110.495 308.59 ); --grape-gradient: linear-gradient( 120deg, var(--grape-tint), var(--grape-shade) );
+  --raspberry: lch( 57.859% 97.892 326.222 ); --raspberry-tint: lch( 61.859% 95.892 327.222 ); --raspberry-shade: lch( 53.859% 99.892 325.222 ); --raspberry-gradient: linear-gradient( 120deg, var(--raspberry-tint), var(--raspberry-shade) );
+  --peach: lch( 71.881% 40.541 32.926 ); --peach-tint: lch( 75.881% 38.541 33.926 ); --peach-shade: lch( 67.881% 42.541 31.926000000000002 ); --peach-gradient: linear-gradient( 120deg, var(--peach-tint), var(--peach-shade) );
+  --lemon: lch( 94.17% 75.545 100.177 ); --lemon-tint: lch( 98.17% 73.545 101.177 ); --lemon-shade: lch( 90.17% 77.545 99.177 ); --lemon-gradient: linear-gradient( 120deg, var(--lemon-tint), var(--lemon-shade) );
+  --pear: lch( 89.96% 79.92 115.45 ); --pear-tint: lch( 93.96% 77.92 116.45 ); --pear-shade: lch( 85.96% 81.92 114.45 ); --pear-gradient: linear-gradient( 120deg, var(--pear-tint), var(--pear-shade) );
+  --lychee: lch( 94.314% 2.996 284.311 ); --lychee-tint: lch( 98.314% 0.996 285.311 ); --lychee-shade: lch( 90.314% 4.996 283.311 ); --lychee-gradient: linear-gradient( 120deg, var(--lychee-tint), var(--lychee-shade) );
+  --blackberry: lch( 9.116% 7.269 287.344 ); --blackberry-tint: lch( 13.116% 5.269 288.344 ); --blackberry-shade: lch( 5.116% 9.269 286.344 ); --blackberry-gradient: linear-gradient( 120deg, var(--blackberry-tint), var(--blackberry-shade) );
+  --white: lch( 100% 0 0 );
+  --black: lch( 4.807% 3.011 285.248 );
+
+
+  --primary: var(--grape); --primary-tint: var(--grape-tint); --primary-shade: var(--grape-shade); --primary-gradient: linear-gradient(120deg, var(--primary-tint), var(--primary-shade));
+  --secondary: var(--raspberry); --secondary-tint: var(--raspberry-tint); --secondary-shade: var(--raspberry-shade); --secondary-gradient: linear-gradient(120deg, var(--secondary-tint), var(--secondary-shade));
+  --tertiary: var(--lemon); --tertiary-tint: var(--lemon-tint); --tertiary-shade: var(--lemon-shade); --tertiary-gradient: linear-gradient(120deg, var(--tertiary-tint), var(--tertiary-shade));
+
+  --lemonade-gradient: linear-gradient(120deg, var(--lemon), var(--peach) 40%, var(--raspberry));
+
+}

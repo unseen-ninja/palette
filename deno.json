@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "build": "deno run -RW src/build.ts",
+    "build:css": "deno run -RW src/build.ts --only-css"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
