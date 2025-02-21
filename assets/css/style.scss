@@ -1,0 +1,82 @@
+---
+---
+
+@import "{{ site.theme }}";
+@import url('https://palette.unseen.ninja/dist/palette.css');
+
+
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root {
+
+  --background: var(--blackberry);
+  --background-tint: var(--blackberry-tint);
+  --background-shade: var(--blackberry-shade);
+
+  --foreground: var(--lychee);
+  --foreground-tint: var(--lychee-tint);
+  --foreground-shade: var(--lychee-shade);
+
+}
+
+
+
+body {
+
+  display: grid;
+  place-items: center;
+
+  padding: clamp(12px, 10vmin, 96px);
+  width: 100%; min-height: 100svh;
+
+  background-color: var(--background);
+
+  font: 400 normal 15px/1.6 system-ui, sans-serif;
+  color: var(--foreground);
+
+}
+
+
+
+a {
+
+  color: var(--raspberry);
+
+  transition: color 200ms ease-in-out;
+
+}
+
+
+a:hover { color: var(--lemon); }
+
+
+
+.markdown-body img { background-color: var(--background); }
+
+
+
+.markdown-body .highlight {
+
+  border-radius: 4px;
+  background-color: var(--background-tint);
+
+  color: color-mix(
+    in srgb,
+    var(--foreground),
+    var(--background) 10%
+  );
+
+}
+
+
+.markdown-body .highlight pre, .markdown-body pre { background-color: var(--background-tint); }
+
+
+
+.markdown-body table, table * { border: none !important; }
+
+.markdown-body table tr { background-color: var(--background-tint) !important; }
+.markdown-body table tr { border-bottom: 1px solid var(--background-shade) !important; }
