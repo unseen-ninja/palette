@@ -1,6 +1,7 @@
 import { readJSON } from "./lib/utils.ts"
 
 import { buildCSSFile } from "./workflows/build_css.ts"
+import { buildDocsFile } from "./workflows/build_docs.ts"
 import { buildReadmeFile } from "./workflows/build_readme.ts"
 import { buildSVGPreviews } from "./workflows/build_svg.ts"
 
@@ -25,4 +26,5 @@ buildCSSFile(palette, settings)
 if (!Deno.args.includes('--only-css')) {
   buildSVGPreviews(palette)
   buildReadmeFile(palette, settings)
+  buildDocsFile(palette)
 }
