@@ -68,6 +68,6 @@ export async function buildCSSFile (palette: Colour[], settings: Settings): Prom
 
   return readFile('./src/templates/css.tpl')
     .then(template => template.replace('%CSS%', css))
-    .then(template => writeFile('dist/palette.css', template))
+    .then(template => writeFile('docs/dist/palette.css', template))
 
 }
