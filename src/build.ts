@@ -26,5 +26,5 @@ buildCSSFile(palette, settings)
 if (!Deno.args.includes('--only-css')) {
   buildSVGPreviews(palette)
   buildReadmeFile(palette, settings)
-  buildDocsFile(palette)
+  buildDocsFile(palette, settings)
 }

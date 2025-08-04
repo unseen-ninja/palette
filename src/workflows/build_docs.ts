@@ -1,60 +1,97 @@
-import { readFile, writeFile } from "../lib/utils.ts"
+import { readFile, writeFile, adjustValue, buildTimeStamp } from "../lib/utils.ts"
 
 
 
 /**
- * Builds a div representing a single colour.
+ * Builds a single HTML div element representing a color swatch.
  *
- * @param {Colour} colour - The colour object to be represented.
- * @return {string} The HTML string representing the div.
+ * @param {Colour} colour - The color object containing the name.
+ * @param {LCH} lch - The LCH color values for the swatch.
+ * @param {string} variant - The swatch variant (e.g., 'regular', 'light', 'dark').
+ * @returns {string} HTML string for the swatch div.
  */
-function buildColourDiv({ name, hex }: Colour): string {
+function buildSwatchColour({ name }: Colour, { lightness, chroma, hue }: LCH, variant: string): string {
+  const swatchCSSVar: string = variant == 'regular' ? `var(--${name.toLowerCase()})` : `var(--${name.toLowerCase()}-${variant})`
+
   return `
-  <div
-    aria-label="${name}"
-    class="palette-entry"
-    style="--swatch-colour: #${hex}"
-    onClick="clickTrigger('#${hex}')"
-  ">
-  </div>
+    <div
+      class="swatch"
+      style="--swatch-colour: ${swatchCSSVar}"
+      onclick="copyToClipboard('lch(${lightness}% ${chroma} ${hue})')"
+    "></div>
   `
 }
 
 
 
 /**
- * Builds a table HTML string representing a list of colours.
+ * Builds an HTML card containing swatches for a color and its variants.
  *
- * @param {Colour[]} palette - An array of Colour objects.
- * @return {string} The HTML string representing the table.
+ * @param {Colour} colour - The base color object.
+ * @param {Settings} settings - Configuration for generating swatch variants.
+ * @returns {string} HTML string for the swatch card.
  */
-function buildPalette(palette: Colour[]): string {
+function buildSwatchCard (colour: Colour, settings: Settings): string {
 
-  const [accentSwatches, baseSwatched] = palette.reduce(
-    (rows, colour) => {
-      rows[colour.role === 'accent' ? 0 : 1].push(buildColourDiv(colour))
-      return rows
-    },
-    [[] as string[], [] as string[]]
-  )
+  let colourSwatches = ``
 
-  return [ accentSwatches.join(''), baseSwatched.join('')].join('')
+  colourSwatches += buildSwatchColour(colour, colour.lch, 'regular')
+
+  if (colour.role === 'accent') {
+    const variants = settings.variants
+    const offsets = settings.offsets
+
+    for (const variant of variants) {
+      const operations = settings.operations[variant]
+
+      const lch: LCH = {
+        lightness: adjustValue(colour.lch.lightness, offsets.lightness, operations.lightness),
+        chroma: adjustValue(colour.lch.chroma, offsets.chroma, operations.chroma),
+        hue: adjustValue(colour.lch.hue, offsets.hue, operations.hue)
+      }
+
+      colourSwatches += buildSwatchColour(colour, lch, variant)
+    }
+  }
+
+  return `
+    <div class="swatch-card">
+      ${colourSwatches}
+      <h3 class="swatch-name">${colour.name}</h3>
+    </div>
+  `
 }
 
 
 
 /**
- * Builds a README file based on the provided palette and settings.
+ * Builds the full HTML markup for all accent color swatch cards in the palette.
  *
- * @param {Colour[]} palette - An array of Colour objects representing the colours to be included in the README file.
- * @param {Settings} settings - The settings object containing the configuration for the README file.
- * @return {Promise<void>} A promise that resolves when the README file has been successfully built and written to disk.
+ * @param {Colour[]} palette - Array of color objects.
+ * @param {Settings} settings - Configuration for swatch generation.
+ * @returns {string} Combined HTML string for all swatch cards.
  */
-export async function buildDocsFile(palette: Colour[]): Promise<void> {
-  const output = buildPalette(palette);
+function buildPalette(palette: Colour[], settings: Settings): string {
+  return palette
+    .filter(colour => colour.role == 'accent')
+    .map(colour => buildSwatchCard(colour, settings))
+    .join('')
+}
 
-  return readFile('./src/templates/docs.tpl')
+
+
+/**
+ * Generates the final documentation HTML file by injecting the palette and timestamp into a template.
+ *
+ * @param {Colour[]} palette - Array of color objects.
+ * @param {Settings} settings - Configuration for swatch generation.
+ * @returns {Promise<void>} A promise that resolves when the file has been written.
+ */
+export async function buildDocsFile(palette: Colour[], settings: Settings): Promise<void> {
+  const output = buildPalette(palette, settings);
+
+  return await readFile('./src/templates/docs.tpl')
     .then(template => template.replace('%PALETTE%', output)
-      .replace('%DATE%', new Date().getFullYear().toString()))
+      .replace('%TIMESTAMP%', buildTimeStamp()))
     .then(template => writeFile('docs/index.html', template));
 }

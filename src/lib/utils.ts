@@ -100,3 +100,25 @@ export function buildCYMKString ({ cyan, magenta, yellow, key }: CMYK): string {
   }
   return `${r(cyan)}% ${r(magenta)}% ${r(yellow)}% ${r(key)}%`
 }
+
+
+
+/**
+ * Generates a timestamp string in the format `YYYYMMDD` based on the current date.
+ *
+ * @returns {string} The current date formatted as a string in `YYYYMMDD` format.
+ */
+export function buildTimeStamp (): string {
+
+  const dateFormatDE: string = new Date().toLocaleDateString('de-DE', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+
+  const year  = dateFormatDE.slice(6, 10),
+        month = dateFormatDE.slice(3, 5),
+        day   = dateFormatDE.slice(0, 2)
+
+  return `${year}${month}${day}`
+}
